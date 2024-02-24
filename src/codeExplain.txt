@@ -1,0 +1,59 @@
+BlobHandler Component Documentation
+
+
+Introduction
+The BlobHandler component is a React component designed to handle the interaction with a server for creating, updating, and fetching HTML content stored in a blob. It utilizes asynchronous functions for posting data, fetching HTML content, and updating data on the server.
+
+Functions
+1. postData
+The postData function is responsible for sending a POST request to a specified URL with JSON data. It is commonly used for creating data on the server.
+
+Parameters:
+url (string): The URL where the POST request will be sent.
+data (object): The data to be sent in JSON format.
+
+Example:
+const response = await postData('https://example.com/api/create', { name: 'John', age: 25 });
+2. fetchHtmlContent
+The fetchHtmlContent function fetches HTML content from a specified URL. It is typically used to retrieve the content stored on the server.
+
+Parameters:
+url (string): The URL from which to fetch HTML content.
+
+Example:
+const htmlContent = await fetchHtmlContent('https://example.com/api/content');
+3. sendUpdatedDataToBlob
+The sendUpdatedDataToBlob function updates existing data on the server by sending a POST request with additional content.
+
+Parameters:
+filePath (string): The file path on the server.
+data (string): The existing data on the server.
+
+Example:
+const updateResponse = await sendUpdatedDataToBlob('/path/to/file', 'existingContent', 'additionalContent');
+4. additionalData
+The additionalData function refines the additional content before sending it to the server. It is utilized in the sendUpdatedDataToBlob function.
+
+Parameters:
+data (string): Existing data on the server.
+additionalContent (string): Additional content to be added.
+
+Example:
+const refinedData = additionalData('existingContent', 'additionalContent');
+5. BlobHandler Component
+The BlobHandler component is a React component that uses the aforementioned functions to interact with the server. It manages the state of the created URL and manipulated HTML content.
+
+Props:
+getDataFromHTMLString (object): An object containing a method getDataFromHTMLString. This method is optional and is used to retrieve additional content.
+
+import { BlobHandler } from './BlobHandler';
+
+const App = () => {
+  const getDataFromHTMLString = {
+    getDataFromHTMLString: 'additionalContent',
+  };
+
+  return (
+    <BlobHandler getDataFromHTMLString={getDataFromHTMLString} />
+  );
+};
