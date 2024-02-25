@@ -125,6 +125,7 @@ export default function App() {
   // Function to append generated HTML to shallow-document class
   const appendHTMLToShallowDocument = (html) => {
     setSelectedHTML(html);
+    setTemplateViewVisible(true); // Set the visibility of the template view
   };
   const { loading, updateLoading } = useLoading();
   console.log("UPdatea  updateLoading(true);", updateLoading);
@@ -139,6 +140,11 @@ export default function App() {
 
     return () => clearTimeout(timer);
   }, []);
+  
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+  
 
   return (
     <ShallowDocumentVisibilityProvider>
@@ -152,10 +158,12 @@ export default function App() {
             </>
           ) : (
             <Router basename={"/"}>
+              <button onClick={()=>setShowSidebar(!showSidebar)}>Toggle</button>
               <div className="cmp-container">
-                {/* Side bar content */}
-                {showSidebar && <Sidebar />}
-
+                {/* Sidebar conditionally rendered based on showSidebar state  */}
+                {showSidebar && <Sidebar />} {/* Render sidebar based on showSidebar state */}
+                {/* {showSidebar?<Sidebar />:null} */}
+                 
                 {/* Main section components with routing */}
                 <div className="cmp-document">
                   {isLoading ? (
@@ -200,7 +208,9 @@ export default function App() {
                             appendHTMLToShallowDocument={
                               appendHTMLToShallowDocument
                             }
-                            toggleSidebar={setShowSidebar}
+                            //  onClick={()=>setShowSidebar(true)} sourav
+                            // toggleSidebar={() => setShowSidebar(true)}// Pass function to toggle sidebar visibility
+                            // toggleSidebar={() => setShowSidebar(true)}// Pass function to toggle sidebar visibility
                           />
                         }
                       />
@@ -233,3 +243,21 @@ export default function App() {
     </ShallowDocumentVisibilityProvider>
   );
 }
+
+// import React, { useState } from "react";
+// import  TemplateIndex  from "./components/TemplateIndex";
+// import Sidebar from "./common-components/Sidebar";
+
+// export default function App() {
+//   const [showSidebar, setShowSidebar] = useState(false);
+//   const [samplesData, setSamplesData] = useState([]);
+
+//   return (
+//     <div>
+//       {/* Pass showSidebar state and samples data to Sidebar component */}
+//       <Sidebar showSidebar={showSidebar} samplesData={samplesData} />
+//       {/* Pass toggleSidebar function to TemplateIndex component */}
+//       <TemplateIndex toggleSidebar={setShowSidebar} setSamplesData={setSamplesData} />
+//     </div>
+//   );
+// }

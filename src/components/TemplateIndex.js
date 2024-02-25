@@ -86,28 +86,47 @@ function TemplateIndex(props) {
                 }
             }
             setSkins(skinData);
+            updateLoading(false); // Move updateLoading outside the loop
         };
 
         fetchSkinData();
     }, []);
+
+    const handleTemplateClick = () => {
+        // Show the sidebar when a template is clicked
+        props.toggleSidebar(); // Call toggleSidebar function provided via props
+    };
+   
+    console.log('Props passed to TemplateIndex:', props); // Log props being passed to TemplateIndex
 
     return (
         <>
             <div id="template" className='template'>
                 {skins.map((skin, index) =>
                     <div className='cmp-row' key={`${skin.skinCode}-${index}`}>
+                        {/* Log props being passed to TitleBar component */}
+                        {console.log('Props passed to TitleBar:', {
+                            id: index + 1,
+                            name: 'choose template',
+                            skinCode: skin.skinCode,
+                            htmlView: skin.html,
+                            appendHTMLToShallowDocument: props.appendHTMLToShallowDocument,
+                            onClick: handleTemplateClick
+                        })}
                         <TitleBar
                             id={index + 1}
                             name={`choose template`}
                             skinCode={skin.skinCode}
                             htmlView={skin.html}
                             appendHTMLToShallowDocument={props.appendHTMLToShallowDocument}
+                            onClick={handleTemplateClick} // Add onClick event handler
                         />
                         <HTMLView
                             name={`choose template${index + 1}`}
                             htmlView={skin.html}
                             appendHTMLToShallowDocument={props.appendHTMLToShallowDocument}
                             key={`html-${skin.skinCode}-${index}`}
+                            onClick={handleTemplateClick} // Add onClick event handler
                         />
                     </div>
                 )}
@@ -118,3 +137,5 @@ function TemplateIndex(props) {
 }
 
 export { TemplateIndex };
+
+
