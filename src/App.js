@@ -120,13 +120,13 @@ import jsPDF from "jspdf";//for pdf genrator
 import html2canvas from "html2canvas";//for pdf genrator
 
 export default function App() {
-  let skinCD = "C001";
+   let skinCD = "C001";
   const [showSidebar, setShowSidebar] = useState(false); //state to control sidebar visibility
   const [selectedHTML, setSelectedHTML] = useState(""); // State to store selected HTML
   const [isLoading, setIsLoading] = useState(true); // State to track loading status
   //const [templplateview, setTemplplateview] = useState(false); //state to control template view visibility
   const [tempview,settempview]=useState(false);
-
+  // const[skinCD,setSkinCD]=useState("C001");
 
   // Function to append generated HTML to shallow-document class
   const appendHTMLToShallowDocument = (html) => {
