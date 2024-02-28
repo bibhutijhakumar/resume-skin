@@ -49,6 +49,7 @@ wordtune-read-extension{display:var(--display-none)}
 .template5{background:url(/public/SMC5.jpg)}
 /* template page css end */
 
+
 /* Sidebar css start */
 .sidebar{position:fixed;top:0;width:210px;padding-top:10px;height:100%;background-color:var(--tertary-color);position:fixed;height:100vh;left:0;overflow-y:scroll}
 .cmp-sidebar ul{margin:0;padding:0}

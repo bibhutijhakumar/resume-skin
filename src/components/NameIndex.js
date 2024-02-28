@@ -63,3 +63,38 @@ function NameIndex() {
     )
 }
 export { NameIndex };
+
+// import React, { useState } from "react";
+
+// function NameIndex({ onSelect }) {
+//   // Function to handle sample selection
+//   const handleSampleSelection = (html) => {
+//     onSelect(html); // Pass the selected HTML back to the parent component
+//   };
+
+//   return (
+//     <>
+//       {NameData.map((data, index) => (
+//         <div className="cmp-row" key={index}>
+//           <TitleBar
+//             id={data.id}
+//             name={data.name}
+//             skinCode={skinCodes[index]}
+//             priority={1}
+//             originalSkin={originalSkin[index]}
+//           />
+//           <HTMLView
+//             id={data.id}
+//             name={data.name}
+//             htmlView={data.htmlView}
+//           />
+//           <button onClick={() => handleSampleSelection(data.htmlView)}>
+//             Select Sample
+//           </button>
+//         </div>
+//       ))}
+//     </>
+//   );
+// }
+
+// export { NameIndex };

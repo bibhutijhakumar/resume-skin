@@ -89,6 +89,8 @@
 // }
 
 import React, { useState, useEffect } from "react";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faTimes, faEye } from '@fortawesome/free-solid-svg-icons'
 import {
   BrowserRouter as Router,
   Routes,
@@ -114,13 +116,17 @@ import { SkinProvider } from "Components/SkinContext";
 
 import { useLoading } from "Components/SkinContext";
 import { ShallowDocumentVisibilityProvider } from "./common-components/ShallowDocumentVisibilityProvider";
+import jsPDF from "jspdf";//for pdf genrator
+import html2canvas from "html2canvas";//for pdf genrator
 
 export default function App() {
   let skinCD = "C001";
   const [showSidebar, setShowSidebar] = useState(false); //state to control sidebar visibility
   const [selectedHTML, setSelectedHTML] = useState(""); // State to store selected HTML
   const [isLoading, setIsLoading] = useState(true); // State to track loading status
-  const [templplateview, setTemplplateview] = useState(false); //state to control template view visibility
+  //const [templplateview, setTemplplateview] = useState(false); //state to control template view visibility
+  const [tempview,settempview]=useState(false);
+
 
   // Function to append generated HTML to shallow-document class
   const appendHTMLToShallowDocument = (html) => {
@@ -136,17 +142,32 @@ export default function App() {
     // Simulate loading delay
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Adjust the delay as needed or remove this setTimeout for real loading process
+    }, 1000); // Adjust the delay as needed or remove this setTimeout for real loading process
 
     return () => clearTimeout(timer);
   }, []);
   
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
+  // const toggleSidebar = () => {
+  //   setShowSidebar(!showSidebar);
+  // };
   
+  //logic for pdf genrator
+  const generatePDF = () => {
+    if(tempview){
+      setTimeout(() => {
+        html2canvas(document.getElementById("tempview")).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF();
+          const imgHeight = (canvas.height * 210) / canvas.width;
+          pdf.addImage(imgData, 0, 0, 210, imgHeight);
+          pdf.save("resume.pdf");
+        });     
+      }, 500);
+    }
+  };
 
   return (
+    <div>
     <ShallowDocumentVisibilityProvider>
       <SkinProvider>
         <InitialLoader />
@@ -158,11 +179,16 @@ export default function App() {
             </>
           ) : (
             <Router basename={"/"}>
-              <button onClick={()=>setShowSidebar(!showSidebar)}>Toggle</button>
-              <div className="cmp-container">
+              <button style={{cursor:"pointer",background:"#101F33",color:"white",borderRadius:"10px"}} 
+                 onClick={() => {
+                  setShowSidebar(!showSidebar); 
+                }}>
+                Toggle</button>
+              
+               <div className="cmp-container">
                 {/* Sidebar conditionally rendered based on showSidebar state  */}
-                {showSidebar && <Sidebar />} {/* Render sidebar based on showSidebar state */}
-                {/* {showSidebar?<Sidebar />:null} */}
+                {/* {showSidebar && <Sidebar />} Render sidebar based on showSidebar state */}
+                {showSidebar?<Sidebar />:null} 
                  
                 {/* Main section components with routing */}
                 <div className="cmp-document">
@@ -225,39 +251,32 @@ export default function App() {
                     </Routes>
                   )}
                 </div>
-
-                {templplateview && ( /* This will hide temp-view when templplateview is false */
-                  <div className="shallow-document">
+                <button style={{height:"30px",cursor:"pointer",background:"#101F33",color:"white",borderRadius:"10px"}}
+                 onClick={()=>
+                   settempview(!tempview)}>View</button>
+                {tempview?
+                  <div className="shallow-document" id="tempview">
                     <div className="temp-view">Template View</div>
                     {selectedHTML && (
                       <div dangerouslySetInnerHTML={{ __html: selectedHTML }} />
                     )}
                     <GetTemplateFromBlob />
                   </div>
-                )}
+                  :null
+                }
+                <button
+                    style={{ height: "30px", cursor: "pointer", background: "#101F33", color: "white",gap:"10px" ,borderRadius:"10px"}}
+                    onClick={generatePDF}
+                  >Download PDF</button>
               </div>
             </Router>
           )}
         </div>
       </SkinProvider>
+      
     </ShallowDocumentVisibilityProvider>
+  </div>
   );
 }
 
-// import React, { useState } from "react";
-// import  TemplateIndex  from "./components/TemplateIndex";
-// import Sidebar from "./common-components/Sidebar";
 
-// export default function App() {
-//   const [showSidebar, setShowSidebar] = useState(false);
-//   const [samplesData, setSamplesData] = useState([]);
-
-//   return (
-//     <div>
-//       {/* Pass showSidebar state and samples data to Sidebar component */}
-//       <Sidebar showSidebar={showSidebar} samplesData={samplesData} />
-//       {/* Pass toggleSidebar function to TemplateIndex component */}
-//       <TemplateIndex toggleSidebar={setShowSidebar} setSamplesData={setSamplesData} />
-//     </div>
-//   );
-// }
